@@ -158,3 +158,29 @@ if st.session_state.page == "cadastro_aluno":
                 st.write("### Respostas das Questões")
                 for questao, resposta in questoes.items():
                     st.write(f"**{questao}:** {resposta}")
+
+elif st.session_state.page == "cadastro_escola":
+    st.title("Cadastro de Escola")
+    st.write("Esta página é para o cadastro de escolas.")
+    # Adicione aqui o código para o cadastro de escolas
+    # Esta seção pode incluir campos como Nome da Escola, Endereço, Telefone, Email, etc.
+    # Além disso, pode haver validações e um botão para salvar as informações no banco de dados.
+    # Exemplo de campos:
+    with st.form("cadastro_escola_form"):
+        nome_escola = st.text_input("Nome da Escola", placeholder="Digite o nome da escola")
+        endereco = st.text_input("Endereço", placeholder="Digite o endereço da escola")
+        telefone = st.text_input("Telefone", placeholder="Digite o telefone da escola")
+        email = st.text_input("Email", placeholder="Digite o email da escola")
+        
+        submitted = st.form_submit_button("Enviar")
+        
+        if submitted:
+            if not nome_escola or not endereco or not telefone or not email:
+                st.error("Por favor, preencha todos os campos obrigatórios.")
+            else:
+                st.success("Cadastro de Escola enviado com sucesso!")
+                st.write(f"**Nome da Escola:** {nome_escola}")
+                st.write(f"**Endereço:** {endereco}")
+                st.write(f"**Telefone:** {telefone}")
+                st.write(f"**Email:** {email}")
+
