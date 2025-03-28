@@ -6,7 +6,7 @@ st.set_page_config(page_title="Cadastro de Aluno", layout="wide")
 
 
 #sidebar para mudança de tela(opção de cadastro de aluno, cadastro de escola, consulta de aluno, acesso a material didático, acesso a provas, acesso a gabaritos)
-st.sidebar.image("LOGO3_EVOLUTIVA.jpg", use_column_width=True)
+st.sidebar.image("LOGO3_EVOLUTIVA.jpg", use_container_width=True)
 st.sidebar.title("Menu")
 st.sidebar.markdown("Escolha uma opção abaixo:")
 
