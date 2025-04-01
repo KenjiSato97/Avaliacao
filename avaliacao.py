@@ -4,33 +4,53 @@ from datetime import datetime
 # Configuração da página
 st.set_page_config(page_title="Cadastro de Aluno", layout="wide")
 
+# Cabeçalho para mudança de tela (opção de cadastro de aluno, cadastro de escola, consulta de aluno, acesso a material didático, acesso a provas, acesso a gabaritos)
 
-#sidebar para mudança de tela(opção de cadastro de aluno, cadastro de escola, consulta de aluno, acesso a material didático, acesso a provas, acesso a gabaritos)
-st.sidebar.image("LOGO3_EVOLUTIVA.jpg", use_container_width=True)
-st.sidebar.title("Menu")
-st.sidebar.markdown("Escolha uma opção abaixo:")
-
-#botões de navegação
+# Botões de navegação
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
-if st.sidebar.button("Cadastro de Aluno", key="cadastro_aluno"):
-    st.session_state.page = "cadastro_aluno"
+col1, col2, col3, col4, col5 = st.columns(5)
 
-if st.sidebar.button("Cadastro de Escola", key="cadastro_escola"):
-    st.session_state.page = "cadastro_escola"
+with col1:
+    with st.expander("Cadastro", expanded=False): 
+        st.write("Selecione uma das opções abaixo:")
+        if st.button("Aluno", key="cadastro_aluno", use_container_width=True):
+            st.session_state.page = "cadastro_aluno"
+        if st.button("Escola", key="cadastro_escola", use_container_width=True): 
+            st.session_state.page = "cadastro_escola"
 
-if st.sidebar.button("Consulta de Aluno", key="consulta_aluno"):
-    st.session_state.page = "consulta_aluno"
+with col2:
+    if st.button("Consulta de Aluno", key="consulta_aluno", use_container_width=True):
+        st.session_state.page = "consulta_aluno"
 
-if st.sidebar.button("Acesso a Material Didático", key="material_didatico"):
-    st.session_state.page = "material_didatico"
+with col3:
+    with st.expander("Material Didático", expanded=False):
+        st.write("Selecione uma das opções abaixo:")
+        if st.button("E-books", key="material_ebooks", use_container_width=True):
+            st.session_state.page = "material_ebooks"
+        if st.button("Vídeos", key="material_videos", use_container_width=True):
+            st.session_state.page = "material_videos"
+        if st.button("Exercícios Práticos", key="material_exercicios", use_container_width=True):
+            st.session_state.page = "material_exercicios"
 
-if st.sidebar.button("Acesso a Provas", key="acesso_provas"):
-    st.session_state.page = "acesso_provas"
+with col4:
+    if st.button("Cronograma e Conteúdo Programático", key="cronograma_conteudo", use_container_width=True):
+        st.session_state.page = "cronograma_conteudo"
 
-if st.sidebar.button("Acesso a Gabaritos", key="acesso_gabaritos"):
-    st.session_state.page = "acesso_gabaritos"
+with col5:
+    with st.expander("Acesso", expanded=False):
+        st.write("Selecione uma das opções abaixo:")
+        if st.button("Gestor", key="acesso_gestor", use_container_width=True):
+            st.session_state.page = "acesso_gestor"
+        if st.button("Professor", key="acesso_professor", use_container_width=True):
+            st.session_state.page = "acesso_professor"
+        if st.button("Aluno", key="acesso_aluno", use_container_width=True):
+            st.session_state.page = "acesso_aluno"
+        if st.button("Secretário", key="acesso_secretario", use_container_width=True):
+            st.session_state.page = "acesso_secretario"
+        if st.button("Prefeito", key="acesso_prefeito", use_container_width=True):
+            st.session_state.page = "acesso_prefeito"
 
 # Exibir o formulário apenas quando o botão "Cadastro de Aluno" for clicado
 if st.session_state.page == "cadastro_aluno":
@@ -159,7 +179,7 @@ if st.session_state.page == "cadastro_aluno":
                 for questao, resposta in questoes.items():
                     st.write(f"**{questao}:** {resposta}")
 
-elif st.session_state.page == "cadastro_escola":
+if st.session_state.page == "cadastro_escola":
     st.title("Cadastro de Escola")
     st.write("Esta página é para o cadastro de escolas.")
     # Adicione aqui o código para o cadastro de escolas
@@ -184,3 +204,165 @@ elif st.session_state.page == "cadastro_escola":
                 st.write(f"**Telefone:** {telefone}")
                 st.write(f"**Email:** {email}")
 
+if st.session_state.page == "consulta_aluno":
+    st.title("Consulta de Aluno")
+    st.write("Esta página é para a consulta de alunos.")
+    # Adicione aqui o código para a consulta de alunos
+    # Esta seção pode incluir campos como Nome do Aluno, Data de Nascimento, etc.
+    # Além disso, pode haver validações e um botão para buscar as informações no banco de dados.
+    # Exemplo de campos:
+    with st.form("consulta_aluno_form"):
+        nome_aluno = st.text_input("Nome do Aluno", placeholder="Digite o nome completo")
+        data_nascimento = st.date_input(
+            "Data de Nascimento", 
+            min_value=datetime(1900, 1, 1), 
+            max_value=datetime.today(), 
+            format="DD/MM/YYYY"
+        )
+        
+        submitted = st.form_submit_button("Consultar")
+        
+        if submitted:
+            if not nome_aluno or not data_nascimento:
+                st.error("Por favor, preencha todos os campos obrigatórios.")
+            else:
+                st.success("Consulta realizada com sucesso!")
+                st.write(f"**Nome do Aluno:** {nome_aluno}")
+                st.write(f"**Data de Nascimento:** {data_nascimento.strftime('%d/%m/%Y')}")
+
+if st.session_state.page == "material_ebooks":
+    st.title("Material Didático - E-books")
+    st.write("Esta página é para o acesso a E-books.")
+    # Adicione aqui o código para o acesso a E-books
+    # Esta seção pode incluir links ou arquivos para download de E-books.
+
+if st.session_state.page == "material_videos":
+    st.title("Material Didático - Vídeos")
+    st.write("Esta página é para o acesso a vídeos.")
+
+if st.session_state.page == "material_exercicios":
+    st.title("Material Didático - Exercícios Práticos")
+    st.write("Esta página é para o acesso a exercícios práticos.")
+    # Adicione aqui o código para o acesso a exercícios práticos
+    # Esta seção pode incluir links ou arquivos para download de exercícios práticos.
+
+if st.session_state.page == "cronograma_conteudo":
+    st.title("Cronograma e Conteúdo Programático")
+    st.write("Esta página é para o acesso ao cronograma e conteúdo programático.")
+    # Adicione aqui o código para o acesso ao cronograma e conteúdo programático
+    # Esta seção pode incluir links ou arquivos para download do cronograma e conteúdo programático.
+
+if st.session_state.page == "acesso_gestor":
+    st.title("Acesso - Gestor")
+    st.write("Esta página é para o login do gestor.")
+    # Adicione aqui o código para o acesso do gestor
+    with st.form("login_gestor_form"):
+        username = st.text_input("Usuário", placeholder="Digite seu usuário")
+        password = st.text_input("Senha", type="password", placeholder="Digite sua senha")
+        
+        submitted = st.form_submit_button("Entrar")
+        
+        if submitted:
+            if not username or not password:
+                st.error("Por favor, preencha todos os campos obrigatórios.")
+            else:
+                # Aqui você pode adicionar a lógica de autenticação
+                # Exemplo: verificar usuário e senha em um banco de dados
+                if username == "gestor" and password == "1234":  # Exemplo de validação simples
+                    st.success("Login realizado com sucesso!")
+                    st.write(f"Bem-vindo, {username}!")
+                else:
+                    st.error("Usuário ou senha inválidos.")
+    # Esta seção pode incluir informações ou links relevantes para o gestor.
+
+if st.session_state.page == "acesso_professor":
+    st.title("Acesso - Professor")
+    st.write("Esta página é para o login do professor.")
+    # Adicione aqui o código para o acesso do professor
+    with st.form("login_professor_form"):
+        username = st.text_input("Usuário", placeholder="Digite seu usuário")
+        password = st.text_input("Senha", type="password", placeholder="Digite sua senha")
+        
+        submitted = st.form_submit_button("Entrar")
+        
+        if submitted:
+            if not username or not password:
+                st.error("Por favor, preencha todos os campos obrigatórios.")
+            else:
+                # Aqui você pode adicionar a lógica de autenticação
+                # Exemplo: verificar usuário e senha em um banco de dados
+                if username == "professor" and password == "1234":  # Exemplo de validação simples
+                    st.success("Login realizado com sucesso!")
+                    st.write(f"Bem-vindo, {username}!")
+                else:
+                    st.error("Usuário ou senha inválidos.")
+    # Esta seção pode incluir informações ou links relevantes para o professor.
+
+if st.session_state.page == "acesso_aluno":
+    st.title("Acesso - Aluno")
+    st.write("Esta página é para o login do aluno.")    
+    # Adicione aqui o código para o acesso do aluno
+    with st.form("login_aluno_form"):
+        username = st.text_input("Usuário", placeholder="Digite seu usuário")
+        password = st.text_input("Senha", type="password", placeholder="Digite sua senha")
+        
+        submitted = st.form_submit_button("Entrar")
+        
+        if submitted:
+            if not username or not password:
+                st.error("Por favor, preencha todos os campos obrigatórios.")
+            else:
+                # Aqui você pode adicionar a lógica de autenticação
+                # Exemplo: verificar usuário e senha em um banco de dados
+                if username == "aluno" and password == "1234":  # Exemplo de validação simples
+                    st.success("Login realizado com sucesso!")
+                    st.write(f"Bem-vindo, {username}!")
+                else:
+                    st.error("Usuário ou senha inválidos.")
+    # Esta seção pode incluir informações ou links relevantes para o aluno.
+
+if st.session_state.page == "acesso_secretario":
+    st.title("Acesso - Secretário")
+    st.write("Esta página é para o login do secretário.")
+    # Adicione aqui o código para o acesso do secretário
+    with st.form("login_secretario_form"):
+        username = st.text_input("Usuário", placeholder="Digite seu usuário")
+        password = st.text_input("Senha", type="password", placeholder="Digite sua senha")
+        
+        submitted = st.form_submit_button("Entrar")
+        
+        if submitted:
+            if not username or not password:
+                st.error("Por favor, preencha todos os campos obrigatórios.")
+            else:
+                # Aqui você pode adicionar a lógica de autenticação
+                # Exemplo: verificar usuário e senha em um banco de dados
+                if username == "secretario" and password == "1234":  # Exemplo de validação simples
+                    st.success("Login realizado com sucesso!")
+                    st.write(f"Bem-vindo, {username}!")
+                else:
+                    st.error("Usuário ou senha inválidos.")
+    # Esta seção pode incluir informações ou links relevantes para o secretário.
+
+if st.session_state.page == "acesso_prefeito":
+    st.title("Acesso - Prefeito")
+    st.write("Esta página é para o login do prefeito.")
+    # Adicione aqui o código para o acesso do prefeito
+    with st.form("login_prefeito_form"):
+        username = st.text_input("Usuário", placeholder="Digite seu usuário")
+        password = st.text_input("Senha", type="password", placeholder="Digite sua senha")
+        
+        submitted = st.form_submit_button("Entrar")
+        
+        if submitted:
+            if not username or not password:
+                st.error("Por favor, preencha todos os campos obrigatórios.")
+            else:
+                # Aqui você pode adicionar a lógica de autenticação
+                # Exemplo: verificar usuário e senha em um banco de dados
+                if username == "prefeito" and password == "1234":
+                    st.success("Login realizado com sucesso!")
+                    st.write(f"Bem-vindo, {username}!")
+                else:
+                    st.error("Usuário ou senha inválidos.")
+    # Esta seção pode incluir informações ou links relevantes para o prefeito.
