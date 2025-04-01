@@ -19,6 +19,8 @@ with col1:
             st.session_state.page = "cadastro_aluno"
         if st.button("Escola", key="cadastro_escola", use_container_width=True): 
             st.session_state.page = "cadastro_escola"
+        if st.button("Prova", key="cadastro_prova", use_container_width=True):
+            st.session_state.page = "cadastro_prova"
 
 with col2:
     if st.button("Consulta de Aluno", key="consulta_aluno", use_container_width=True):
@@ -74,42 +76,7 @@ if st.session_state.page == "cadastro_aluno":
                 max_value=datetime.today(), 
                 format="DD/MM/YYYY"
             )
-        
-        # Áreas de Conhecimento, Matérias e Série
-        st.subheader("Áreas de Conhecimento")
-        col1, col2, col3 = st.columns(3)
-
-        with col1:
-            areas_conhecimento = [
-                "Selecione uma área",
-                "Linguagens", 
-                "Matemática", 
-                "Ciências Humanas", 
-                "Ciências Naturais", 
-                "Ciências da Religião"
-            ]
-            area_selecionada = st.selectbox("Área de Conhecimento", options=areas_conhecimento)
-
-        with col2:
-            materia = [
-                "Selecione uma matéria",
-                "Português",
-                "Inglês",
-                "Arte",
-                "Educação Física",
-                "Espanhol",
-                "Matemática",
-                "História",
-                "Geografia",
-                "Ciências",
-                "Religião"
-            ]
-            materia_selecionada = st.selectbox("Matéria", options=materia)
-            
-
-        with col3:
-            serie = st.selectbox("Série", options=["1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano", "6º Ano", "7º Ano", "8º Ano", "9º Ano", "1º Ano Médio", "2º Ano Médio", "3º Ano Médio"])
-
+        serie = st.selectbox("Série", options=["Selecione uma série", "1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano", "6º Ano", "7º Ano", "8º Ano", "9º Ano", "1º Ano Médio", "2º Ano Médio", "3º Ano Médio"])
 
             # Nome da Escola
         nome_escola = st.text_input("Nome da Escola", placeholder="Digite o nome da escola")
@@ -132,26 +99,6 @@ if st.session_state.page == "cadastro_aluno":
         ]
         laudo_selecionado = st.multiselect("Selecione as condições (se aplicável)", opcoes_laudo)
         outros_laudo = st.text_input("Outros (especificação)(se aplicável)", max_chars=100)
-        # Questões
-        st.subheader("Respostas das Questões")
-        cols = st.columns(5)
-
-        questoes = {}
-        for i in range(1, 6):
-            with cols[i - 1]:
-                resposta = st.selectbox(
-                    f"Questão {i}", options=["A", "B", "C", "D", "E"], key=f"q{i}"
-                )
-                questoes[f"Questão {i}"] = resposta
-
-        cols = st.columns(5)
-
-        for i in range(6, 11):
-            with cols[i - 6]:
-                resposta = st.selectbox(
-                    f"Questão {i}", options=["A", "B", "C", "D", "E"], key=f"q{i}"
-                )
-                questoes[f"Questão {i}"] = resposta
 
         # Botão de envio
         submitted = st.form_submit_button("Enviar")
@@ -165,8 +112,6 @@ if st.session_state.page == "cadastro_aluno":
                 st.success("Formulário enviado com sucesso!")
                 st.write("### Resumo do Cadastro")
                 st.write(f"**Nome:** {nome}")
-                st.write(f"**Área de Conhecimento:** {area_selecionada}")
-                st.write(f"**Matéria:** {materia_selecionada}")
                 st.write(f"**Série:** {serie}")
                 st.write(f"**Zona:** {zona}")
                 st.write(f"**Nome da Escola:** {nome_escola}")
@@ -175,9 +120,6 @@ if st.session_state.page == "cadastro_aluno":
                 st.write(f"**Laudo Médico/Especialista:** {', '.join(laudo_selecionado) if laudo_selecionado else 'Nenhum'}")
                 if "Outros" in laudo_selecionado and outros_laudo:
                     st.write(f"**Outros (especificação):** {outros_laudo}")
-                st.write("### Respostas das Questões")
-                for questao, resposta in questoes.items():
-                    st.write(f"**{questao}:** {resposta}")
 
 if st.session_state.page == "cadastro_escola":
     st.title("Cadastro de Escola")
@@ -203,6 +145,81 @@ if st.session_state.page == "cadastro_escola":
                 st.write(f"**Endereço:** {endereco}")
                 st.write(f"**Telefone:** {telefone}")
                 st.write(f"**Email:** {email}")
+
+if st.session_state.page == "cadastro_prova":
+    st.title("Cadastro de Prova")
+    # Nome do Aluno
+    st.subheader("Nome do Aluno")
+    nome_aluno = st.text_input("Nome do Aluno", placeholder="Digite o nome completo")
+    # Área de Conhecimento e Matéria
+    st.subheader("Áreas de Conhecimento")
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        areas_conhecimento = [
+            "Selecione uma área",
+            "Linguagens", 
+            "Matemática", 
+            "Ciências Humanas", 
+            "Ciências Naturais", 
+            "Ciências da Religião"
+        ]
+        area_selecionada = st.selectbox("Área de Conhecimento", options=areas_conhecimento)
+    with col2:
+        materia = [
+            "Selecione uma matéria",
+            "Português",
+            "Inglês",
+            "Arte",
+            "Educação Física",
+            "Espanhol",
+            "Matemática",
+            "História",
+            "Geografia",
+            "Ciências",
+            "Religião"
+        ]
+        materia_selecionada = st.selectbox("Matéria", options=materia)
+    with col3:
+        serie_prova = st.selectbox("Série", options=["Selecione uma série", "1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano", "6º Ano", "7º Ano", "8º Ano", "9º Ano", "1º Ano Médio", "2º Ano Médio", "3º Ano Médio"])
+            
+     # Questões
+    st.subheader("Respostas das Questões")
+    cols = st.columns(5)
+    questoes = {}
+    for i in range(1, 6):
+        with cols[i - 1]:
+            resposta = st.selectbox(
+                f"Questão {i}", options=["A", "B", "C", "D", "E"], key=f"q{i}"
+            )
+            questoes[f"Questão {i}"] = resposta
+    cols = st.columns(5)
+    for i in range(6, 11):
+        with cols[i - 6]:
+            resposta = st.selectbox(
+                f"Questão {i}", options=["A", "B", "C", "D", "E"], key=f"q{i}"
+            )
+            questoes[f"Questão {i}"] = resposta
+
+    # Botão de envio
+    submitted = st.button("Enviar Respostas")
+
+    if submitted:
+        # Verifica se o nome do aluno foi preenchido
+        if not nome_aluno or materia_selecionada == "Selecione uma matéria" or  area_selecionada == "Selecione uma área" or serie_prova == "Selecione uma série":
+           st.error("Por favor, preencha todos os campos obrigatórios.")
+        else:  
+            st.success("Respostas enviadas com sucesso!")
+            st.write("### Resumo do Cadastro")
+            st.write(f"**Nome do Aluno:** {nome_aluno}")
+            st.write(f"**Área de Conhecimento:** {area_selecionada}")
+            st.write(f"**Matéria:** {materia_selecionada}")
+            st.write(f"**Série:** {serie_prova}")
+            for questao, resposta in questoes.items():
+                st.write(f"**{questao}:** {resposta}")
+
+
+
 
 if st.session_state.page == "consulta_aluno":
     st.title("Consulta de Aluno")
