@@ -2,7 +2,9 @@ import streamlit as st
 from datetime import datetime
 
 # Configuração da página
-st.set_page_config(page_title="Cadastro de Aluno", layout="wide")
+st.set_page_config(page_title="Plataforma de Avaliação Pedagógica Municipal", layout="wide")
+with open("styles.css") as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Cabeçalho para mudança de tela (opção de cadastro de aluno, cadastro de escola, consulta de aluno, acesso a material didático, acesso a provas, acesso a gabaritos)
 
@@ -23,8 +25,21 @@ with col1:
             st.session_state.page = "cadastro_prova"
 
 with col2:
-    if st.button("Consulta de Aluno", key="consulta_aluno", use_container_width=True):
-        st.session_state.page = "consulta_aluno"
+    with st.expander("Consulta", expanded=False): 
+        st.write("Selecione uma das opções abaixo:")
+        if st.button("Escola", key="consulta_escola", use_container_width=True):
+            st.session_state.page = "consulta_escola"
+        if st.button("Série", key="consulta_serie", use_container_width=True): 
+            st.session_state.page = "consulta_serie"
+        if st.button("Disciplina", key="consulta_disciplina", use_container_width=True):
+            st.session_state.page = "consulta_disciplina"
+        if st.button("Zona", key="consulta_zona", use_container_width=True):
+            st.session_state.page = "consulta_zona"
+        if st.button("Gênero", key="consulta_genero", use_container_width=True):
+            st.session_state.page = "consulta_genero"
+        if st.button("Aluno", key="consulta_aluno", use_container_width=True):
+            st.session_state.page = "consulta_aluno"
+
 
 with col3:
     with st.expander("Material Didático", expanded=False):
@@ -37,8 +52,12 @@ with col3:
             st.session_state.page = "material_exercicios"
 
 with col4:
-    if st.button("Cronograma e Conteúdo Programático", key="cronograma_conteudo", use_container_width=True):
-        st.session_state.page = "cronograma_conteudo"
+    with st.expander("Pedagógico", expanded=False):
+        st.write("Selecione uma das opções abaixo:")
+        if st.button("Cronograma", key="pedagogico_cronograma", use_container_width=True):
+            st.session_state.page = "pedagogico_cronograma"
+        if st.button("Conteúdo Programático", key="pedagogico_conteudo", use_container_width=True):
+            st.session_state.page = "pedagogico_conteudo"
 
 with col5:
     with st.expander("Acesso", expanded=False):
@@ -53,6 +72,21 @@ with col5:
             st.session_state.page = "acesso_secretario"
         if st.button("Prefeito", key="acesso_prefeito", use_container_width=True):
             st.session_state.page = "acesso_prefeito"
+
+if st.session_state.page == "home":
+    st.title("Plataforma de Avaliação Pedagógica Municipal")
+    st.write("""
+    1. Conhecimento  
+    2. Pensamento Científico, Crítico e Criativo  
+    3. Repertório Cultural  
+    4. Comunicação  
+    5. Cultura Digital  
+    6. Trabalho e Projeto de Vida  
+    7. Argumentação  
+    8. Autoconhecimento e Autocuidado  
+    9. Empatia e Cooperação  
+    10. Responsabilidade e Cidadania
+    """)
 
 # Exibir o formulário apenas quando o botão "Cadastro de Aluno" for clicado
 if st.session_state.page == "cadastro_aluno":
@@ -76,9 +110,15 @@ if st.session_state.page == "cadastro_aluno":
                 max_value=datetime.today(), 
                 format="DD/MM/YYYY"
             )
-        serie = st.selectbox("Série", options=["Selecione uma série", "1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano", "6º Ano", "7º Ano", "8º Ano", "9º Ano", "1º Ano Médio", "2º Ano Médio", "3º Ano Médio"])
 
-            # Nome da Escola
+        col1, col2 = st.columns(2)
+        with col1:
+        # Gênero
+            genero = st.selectbox("Gênero", options=["Selecione o gênero", "Masculino", "Feminino"])
+        with col2:
+            serie = st.selectbox("Série", options=["Selecione uma série", "1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano", "6º Ano", "7º Ano", "8º Ano", "9º Ano", "1º Ano Médio", "2º Ano    Médio", "3º Ano Médio"])
+
+        # Nome da Escola
         nome_escola = st.text_input("Nome da Escola", placeholder="Digite o nome da escola")
 
         col1, col2 = st.columns(2)
@@ -106,12 +146,13 @@ if st.session_state.page == "cadastro_aluno":
         # Processamento do formulário
         if submitted:
             # Verifica se todos os campos obrigatórios foram preenchidos
-            if not nome or not serie or not zona or not nome_escola or not unidade_prova:
+            if not nome or genero == "Selecione o gênero" or serie == "Selecione uma série" or not zona or not nome_escola or not unidade_prova:
                 st.error("Por favor, preencha todos os campos obrigatórios.")
             else:
                 st.success("Formulário enviado com sucesso!")
                 st.write("### Resumo do Cadastro")
                 st.write(f"**Nome:** {nome}")
+                st.write(f"**Gênero:** {genero}")
                 st.write(f"**Série:** {serie}")
                 st.write(f"**Zona:** {zona}")
                 st.write(f"**Nome da Escola:** {nome_escola}")
@@ -247,6 +288,112 @@ if st.session_state.page == "consulta_aluno":
                 st.write(f"**Nome do Aluno:** {nome_aluno}")
                 st.write(f"**Data de Nascimento:** {data_nascimento.strftime('%d/%m/%Y')}")
 
+if st.session_state.page == "consulta_escola":
+    st.title("Consulta de Escola")
+    st.write("Esta página é para a consulta de escolas.")
+    # Adicione aqui o código para a consulta de escolas
+    # Esta seção pode incluir campos como Nome da Escola, Endereço, Telefone, Email, etc.
+    # Além disso, pode haver validações e um botão para buscar as informações no banco de dados.
+    # Exemplo de campos:
+    with st.form("consulta_escola_form"):
+        nome_escola = st.text_input("Nome da Escola", placeholder="Digite o nome da escola")
+        
+        submitted = st.form_submit_button("Consultar")
+        
+        if submitted:
+            if not nome_escola:
+                st.error("Por favor, preencha o campo obrigatório.")
+            else:
+                st.success("Consulta de Escola realizada com sucesso!")
+                st.write(f"**Nome da Escola:** {nome_escola}")
+
+if st.session_state.page == "consulta_serie":
+    st.title("Consulta de Série")
+    st.write("Esta página é para a consulta de séries.")
+    # Adicione aqui o código para a consulta de séries
+    # Esta seção pode incluir campos como Nome da Série, Ano, etc.
+    # Além disso, pode haver validações e um botão para buscar as informações no banco de dados.
+    # Exemplo de campos:
+    with st.form("consulta_serie_form"):
+        nome_serie = st.selectbox("Série", options=["Selecione uma série", "1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano", "6º Ano", "7º Ano", "8º Ano", "9º Ano", "1º Ano Médio", "2º Ano Médio", "3º Ano Médio"])
+        
+        submitted = st.form_submit_button("Consultar")
+        
+        if submitted:
+            if not nome_serie:
+                st.error("Por favor, preencha o campo obrigatório.")
+            else:
+                st.success("Consulta de Série realizada com sucesso!")
+                st.write(f"**Nome da Série:** {nome_serie}")
+
+if st.session_state.page == "consulta_disciplina":
+    st.title("Consulta de Disciplina")
+    st.write("Esta página é para a consulta de disciplinas.")
+    # Adicione aqui o código para a consulta de disciplinas
+    # Esta seção pode incluir campos como Nome da Disciplina, Professor, etc.
+    # Além disso, pode haver validações e um botão para buscar as informações no banco de dados.
+    # Exemplo de campos:
+    materia = [
+            "Selecione uma matéria",
+            "Português",
+            "Inglês",
+            "Arte",
+            "Educação Física",
+            "Espanhol",
+            "Matemática",
+            "História",
+            "Geografia",
+            "Ciências",
+            "Religião"
+        ]
+    with st.form("consulta_disciplina_form"):
+        nome_disciplina = materia_selecionada = st.selectbox("Matéria", options=materia)
+        submitted = st.form_submit_button("Consultar")
+        if submitted:
+            if not nome_disciplina:
+                st.error("Por favor, preencha o campo obrigatório.")
+            else:
+                st.success("Consulta de Disciplina realizada com sucesso!")
+                st.write(f"**Nome da Disciplina:** {nome_disciplina}")
+
+if st.session_state.page == "consulta_zona":
+    st.title("Consulta de Zona")
+    st.write("Esta página é para a consulta de zonas.")
+    # Adicione aqui o código para a consulta de zonas
+    # Esta seção pode incluir campos como Zona Rural ou Urbana, Nome da Escola, etc.
+    # Além disso, pode haver validações e um botão para buscar as informações no banco de dados.
+    # Exemplo de campos:
+    with st.form("consulta_zona_form"):
+        zona = st.radio("Localização da Escola", options=["Zona Urbana", "Zona Rural"])
+        
+        submitted = st.form_submit_button("Consultar")
+        
+        if submitted:
+            if not zona:
+                st.error("Por favor, preencha o campo obrigatório.")
+            else:
+                st.success("Consulta de Zona realizada com sucesso!")
+                st.write(f"**Localização da Escola:** {zona}")
+
+if st.session_state.page == "consulta_genero":
+    st.title("Consulta de Gênero")
+    st.write("Esta página é para a consulta de gêneros.")
+    # Adicione aqui o código para a consulta de gêneros
+    # Esta seção pode incluir campos como Gênero, Nome da Escola, etc.
+    # Além disso, pode haver validações e um botão para buscar as informações no banco de dados.
+    # Exemplo de campos:
+    with st.form("consulta_genero_form"):
+        genero = st.selectbox("Gênero", options=["Selecione o gênero", "Masculino", "Feminino"])
+        
+        submitted = st.form_submit_button("Consultar")
+        
+        if submitted:
+            if not genero:
+                st.error("Por favor, preencha o campo obrigatório.")
+            else:
+                st.success("Consulta de Gênero realizada com sucesso!")
+                st.write(f"**Gênero:** {genero}")                
+
 if st.session_state.page == "material_ebooks":
     st.title("Material Didático - E-books")
     st.write("Esta página é para o acesso a E-books.")
@@ -263,11 +410,17 @@ if st.session_state.page == "material_exercicios":
     # Adicione aqui o código para o acesso a exercícios práticos
     # Esta seção pode incluir links ou arquivos para download de exercícios práticos.
 
-if st.session_state.page == "cronograma_conteudo":
-    st.title("Cronograma e Conteúdo Programático")
-    st.write("Esta página é para o acesso ao cronograma e conteúdo programático.")
-    # Adicione aqui o código para o acesso ao cronograma e conteúdo programático
-    # Esta seção pode incluir links ou arquivos para download do cronograma e conteúdo programático.
+if st.session_state.page == "pedagogico_cronograma":
+    st.title("Cronograma Pedagógico")
+    st.write("Esta página é para o acesso ao cronograma pedagógico.")
+    # Adicione aqui o código para o acesso ao cronograma pedagógico
+    # Esta seção pode incluir links ou arquivos para download do cronograma pedagógico.
+
+if st.session_state.page == "pedagogico_conteudo":
+    st.title("Conteúdo Programático")
+    st.write("Esta página é para o acesso ao conteúdo programático.")
+    # Adicione aqui o código para o acesso ao conteúdo programático
+    # Esta seção pode incluir links ou arquivos para download do conteúdo programático.
 
 if st.session_state.page == "acesso_gestor":
     st.title("Acesso - Gestor")
