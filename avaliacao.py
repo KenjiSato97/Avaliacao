@@ -1,5 +1,6 @@
 import streamlit as st
 from datetime import datetime
+from dataframes import load_or_create_dataframes, save_dataframes
 
 # Configuração da página
 st.set_page_config(page_title="Plataforma de Avaliação Pedagógica Municipal", layout="wide")
@@ -39,7 +40,6 @@ with col2:
             st.session_state.page = "consulta_genero"
         if st.button("Aluno", key="consulta_aluno", use_container_width=True):
             st.session_state.page = "consulta_aluno"
-
 
 with col3:
     with st.expander("Material Didático", expanded=False):
@@ -127,10 +127,6 @@ if st.session_state.page == "cadastro_aluno":
             # Zona Rural ou Urbana
             zona = st.radio("Localização da Escola", options=["Zona Urbana", "Zona Rural"])
 
-        with col2:
-            # Unidade da Prova
-            unidade_prova = st.selectbox("Unidade da Prova", options="1ª Unidade, 2ª Unidade, 3ª Unidade, 4ª Unidade".split(", "))
-
         # Laudo
         st.subheader("Laudo Médico/Especialista")
         opcoes_laudo = [
@@ -146,7 +142,7 @@ if st.session_state.page == "cadastro_aluno":
         # Processamento do formulário
         if submitted:
             # Verifica se todos os campos obrigatórios foram preenchidos
-            if not nome or genero == "Selecione o gênero" or serie == "Selecione uma série" or not zona or not nome_escola or not unidade_prova:
+            if not nome or genero == "Selecione o gênero" or serie == "Selecione uma série" or not zona or not nome_escola:
                 st.error("Por favor, preencha todos os campos obrigatórios.")
             else:
                 st.success("Formulário enviado com sucesso!")
@@ -157,7 +153,6 @@ if st.session_state.page == "cadastro_aluno":
                 st.write(f"**Zona:** {zona}")
                 st.write(f"**Nome da Escola:** {nome_escola}")
                 st.write(f"**Data de Nascimento:** {data_nascimento.strftime('%d/%m/%Y')}")
-                st.write(f"**Unidade da Prova:** {unidade_prova}")
                 st.write(f"**Laudo Médico/Especialista:** {', '.join(laudo_selecionado) if laudo_selecionado else 'Nenhum'}")
                 if "Outros" in laudo_selecionado and outros_laudo:
                     st.write(f"**Outros (especificação):** {outros_laudo}")
@@ -329,10 +324,6 @@ if st.session_state.page == "consulta_serie":
 if st.session_state.page == "consulta_disciplina":
     st.title("Consulta de Disciplina")
     st.write("Esta página é para a consulta de disciplinas.")
-    # Adicione aqui o código para a consulta de disciplinas
-    # Esta seção pode incluir campos como Nome da Disciplina, Professor, etc.
-    # Além disso, pode haver validações e um botão para buscar as informações no banco de dados.
-    # Exemplo de campos:
     materia = [
             "Selecione uma matéria",
             "Português",
