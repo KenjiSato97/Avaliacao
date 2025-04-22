@@ -26,9 +26,9 @@ def create_dataframes():
     
     # Criação do df_aluno
     alunos = []
-    series = ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano']
+    series = ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano', '6º ano', '7º ano', '8º ano', '9º ano','1º ano médio', '2º ano médio', '3º ano médio']
     generos = ['Masculino', 'Feminino']
-    localizacoes = ['Urbana', 'Rural', 'Periférica']
+    localizacoes = ['Urbana', 'Rural']
     
     for i in range(1, 51):  # Criar 50 alunos
         id_escola = random.randint(1, 3)
@@ -50,7 +50,10 @@ def create_dataframes():
     
     # Criação do df_prova
     provas = []
-    materias = ['Português', 'Matemática', 'Ciências', 'História', 'Geografia']
+    materias = [
+        "Português", "Inglês", "Arte", "Educação Física", "Espanhol",
+        "Matemática", "História", "Geografia", "Ciências", "Religião"
+    ]
     
     for aluno in alunos:
         # Cada aluno faz entre 1 e 3 provas
@@ -67,7 +70,7 @@ def create_dataframes():
             
             # Adicionar respostas às questões (de 1 a 10)
             for i in range(1, 11):
-                prova[f"questao_{i}"] = random.choice(['A', 'B', 'C', 'D', ''])
+                prova[f"questao_{i}"] = random.choice(['A', 'B', 'C', 'D', 'E'])
             
             provas.append(prova)
     
