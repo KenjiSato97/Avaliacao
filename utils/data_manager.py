@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
-from datetime import datetime
 import random
-import string
+import os
 
 def create_dataframes():
     """
@@ -20,18 +19,23 @@ def create_dataframes():
         {"id_escola": 2, "nomeEscola": "Colégio Estadual Machado de Assis", 
          "endereco": "Av. Principal, 456", "telefone": "(11) 2345-6789", "email": "machadodeassis@edu.com"},
         {"id_escola": 3, "nomeEscola": "Instituto Educacional Monteiro Lobato", 
-         "endereco": "Rua dos Pinheiros, 789", "telefone": "(11) 3456-5678", "email": "monteirolobato@edu.com"}
+         "endereco": "Rua dos Pinheiros, 789", "telefone": "(11) 3456-5678", "email": "monteirolobato@edu.com"},
+        {"id_escola": 4, "nomeEscola": "Escola Técnica Santos Dumont", 
+         "endereco": "Praça Central, 101", "telefone": "(11) 4567-8901", "email": "santosdumont@edu.com"},
+        {"id_escola": 5, "nomeEscola": "Centro Educacional Cecília Meireles", 
+         "endereco": "Alameda das Acácias, 202", "telefone": "(11) 5678-9012", "email": "ceciliameireles@edu.com"}
     ]
     df_escola = pd.DataFrame(escolas)
     
     # Criação do df_aluno
     alunos = []
-    series = ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano', '6º ano', '7º ano', '8º ano', '9º ano','1º ano médio', '2º ano médio', '3º ano médio']
+    series = ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano', '6º ano', '7º ano', '8º ano', '9º ano',
+              '1º ano médio', '2º ano médio', '3º ano médio']
     generos = ['Masculino', 'Feminino']
     localizacoes = ['Urbana', 'Rural']
     
-    for i in range(1, 51):  # Criar 50 alunos
-        id_escola = random.randint(1, 3)
+    for i in range(1, 101):  # Criar 100 alunos
+        id_escola = random.randint(1, 5)
         escola_info = next(escola for escola in escolas if escola["id_escola"] == id_escola)
         
         aluno = {
@@ -56,21 +60,18 @@ def create_dataframes():
     ]
     
     for aluno in alunos:
-        # Cada aluno faz entre 1 e 3 provas
-        for _ in range(random.randint(1, 3)):
-            materia = random.choice(materias)
-            
+        # Cada aluno faz 1 prova de cada matéria
+        for materia in materias:
             prova = {
-                "id_prova": len(provas) + 1,
-                "id_aluno": aluno["id_aluno"],
-                "nomeAluno": aluno["nomeAluno"],
-                "materia": materia,
-                "serie": aluno["serie"]
+            "id_prova": len(provas) + 1,
+            "id_aluno": aluno["id_aluno"],
+            "nomeAluno": aluno["nomeAluno"],
+            "materia": materia,
+            "serie": aluno["serie"]
             }
-            
             # Adicionar respostas às questões (de 1 a 10)
             for i in range(1, 11):
-                prova[f"questao_{i}"] = random.choice(['A', 'B', 'C', 'D', 'E'])
+                prova[f"questao_{i}"] = random.choice(['A', 'B'])
             
             provas.append(prova)
     
@@ -90,7 +91,7 @@ def create_dataframes():
             
             # Definir respostas corretas para as questões de 1 a 10
             for i in range(1, 11):
-                gabarito[f"questao_{i}"] = random.choice(['A', 'B', 'C', 'D'])
+                gabarito[f"questao_{i}"] = random.choice(['A', 'B'])
             
             gabaritos.append(gabarito)
     
@@ -123,7 +124,10 @@ def load_or_create_dataframes():
     
     except (FileNotFoundError, Exception):
         # Se os arquivos não existirem, cria novos dataframes
-        return create_dataframes()
+        dataframes = create_dataframes()
+        # Salva os dataframes
+        save_dataframes(dataframes)
+        return dataframes
 
 def save_dataframes(dataframes):
     """
@@ -144,56 +148,59 @@ def save_dataframes(dataframes):
     
     print("Dataframes salvos com sucesso!")
 
-def calcular_resultado_prova(df_prova, df_gabarito):
+def calcular_desempenho(df_prova, df_gabarito):
     """
-    Calcula o resultado de cada prova comparando com o gabarito correspondente.
+    Calcula o desempenho dos alunos com base nas respostas e gabaritos
     
     Args:
         df_prova: DataFrame com as respostas dos alunos
-        df_gabarito: DataFrame com os gabaritos das provas
-    
+        df_gabarito: DataFrame com as respostas corretas
+        
     Returns:
-        DataFrame com os resultados das provas
+        DataFrame com os resultados calculados
     """
-    # Criar uma cópia do df_prova para adicionar os resultados
-    df_resultado = df_prova.copy()
-    df_resultado['pontuacao'] = 0  # Inicializar coluna de pontuação
+    # Criar dataframe para armazenar os resultados
+    resultados = []
     
-    # Para cada prova
-    for idx, prova in df_prova.iterrows():
+    # Iterar sobre as provas
+    for _, prova in df_prova.iterrows():
         # Encontrar o gabarito correspondente
         gabarito = df_gabarito[(df_gabarito['serie'] == prova['serie']) & 
-                               (df_gabarito['materia'] == prova['materia'])]
+                              (df_gabarito['materia'] == prova['materia'])]
         
-        if not gabarito.empty:
-            gabarito = gabarito.iloc[0]  # Pegar o primeiro gabarito encontrado
+        if len(gabarito) == 0:
+            continue
             
-            # Comparar as respostas e calcular a pontuação
-            pontuacao = 0
-            for i in range(1, 11):
-                questao = f'questao_{i}'
-                # Verificar se a resposta do aluno não está vazia e corresponde ao gabarito
-                if prova[questao] and prova[questao] == gabarito[questao]:
-                    pontuacao += 1
-                    
-            # Atualizar a pontuação na cópia do dataframe
-            df_resultado.at[idx, 'pontuacao'] = pontuacao
+        gabarito = gabarito.iloc[0]
+        
+        # Calcular acertos
+        acertos = 0
+        total_questoes = 0
+        
+        for i in range(1, 11):
+            coluna_questao = f'questao_{i}'
+            if coluna_questao in prova and coluna_questao in gabarito:
+                total_questoes += 1
+                if prova[coluna_questao] == gabarito[coluna_questao]:
+                    acertos += 1
+        
+        # Calcular a nota (0 a 10)
+        if total_questoes > 0:
+            nota = (acertos / total_questoes) * 10
+        else:
+            nota = 0
             
-    return df_resultado
-
-# Exemplo de uso
-if __name__ == "__main__":
-    # Criar ou carregar dataframes
-    dfs = load_or_create_dataframes()
+        # Adicionar aos resultados
+        resultado = {
+            'id_prova': prova['id_prova'],
+            'id_aluno': prova['id_aluno'],
+            'nomeAluno': prova['nomeAluno'],
+            'materia': prova['materia'],
+            'serie': prova['serie'],
+            'acertos': acertos,
+            'total_questoes': total_questoes,
+            'nota': nota
+        }
+        resultados.append(resultado)
     
-    # Exemplo de acesso aos dataframes
-    df_aluno = dfs['df_aluno']
-    df_escola = dfs['df_escola']
-    df_prova = dfs['df_prova']
-    df_gabarito = dfs['df_gabarito']
-    
-    # Exemplo de cálculo de resultados
-    df_resultados = calcular_resultado_prova(df_prova, df_gabarito)
-    
-    # Salvar dataframes para uso futuro
-    save_dataframes(dfs)
+    return pd.DataFrame(resultados)
