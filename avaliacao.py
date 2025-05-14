@@ -16,7 +16,9 @@ with open("styles.css") as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Cabeçalho para mudança de tela (opção de cadastro de aluno, cadastro de escola, consulta de aluno, acesso a material didático, acesso a provas, acesso a gabaritos)
-
+col1, col2 = st.columns(2)
+with col1:
+    st.image("logo-evolutiva.jpg", use_column_width=False, width=150)
 # Botões de navegação
 if "page" not in st.session_state:
     st.session_state.page = "home"
@@ -701,12 +703,56 @@ if st.session_state.page == "material_ebooks":
 if st.session_state.page == "material_videos":
     st.title("Material Didático - Vídeos")
     st.write("Esta página é para o acesso a vídeos.")
+    # Adicione aqui o código para o acesso a vídeos
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.video("https://youtu.be/ZR_Ou01WsK0?si=cKVZa4We_CCCiBHU")
+
+    with col2:
+        st.video("https://www.youtube.com/watch?v=C00IHVngcfo")
 
 if st.session_state.page == "material_exercicios":
     st.title("Material Didático - Exercícios Práticos")
     st.write("Esta página é para o acesso a exercícios práticos.")
     # Adicione aqui o código para o acesso a exercícios práticos
     # Esta seção pode incluir links ou arquivos para download de exercícios práticos.
+    st.subheader("Exercícios Práticos")
+    #Seleção de série e matéria
+    serie = st.selectbox("Selecione a Série", options=["Selecione uma série", "1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano", "6º Ano", "7º Ano", "8º Ano", "9º Ano", "1º Ano Médio", "2º Ano Médio", "3º Ano Médio"])
+    materia = st.selectbox("Selecione a Matéria", 
+                           options=[
+                            "Selecione uma matéria",
+                            "Português",
+                            "Inglês",
+                            "Arte",
+                            "Educação Física",
+                            "Espanhol",
+                            "Matemática",
+                            "História",
+                            "Geografia",
+                            "Ciências",
+                            "Religião"])
+
+    if serie != "Selecione uma série" and materia != "Selecione uma matéria":
+        # Caminho dinâmico para o arquivo PDF com base na série e matéria selecionadas
+        pdf_file_path = os.path.join(os.getcwd(), "Materiais", serie, materia.lower(), f"{serie}-{materia.upper()}.pdf")
+
+        if os.path.exists(pdf_file_path):
+            with open(pdf_file_path, "rb") as pdf_file:
+                st.download_button(
+                    label=f"📥 Baixar Exercícios Práticos ({serie} - {materia})",
+                    data=pdf_file.read(),
+                    file_name=f"{serie}-{materia.upper()}.pdf",
+                    mime="application/pdf",
+                )
+        else:
+            st.error("O arquivo PDF não foi encontrado. Por favor, verifique o caminho.")
+    else:
+        st.info("Por favor, selecione a Série e a Matéria para acessar o material.")
+
+
+
 
 if st.session_state.page == "pedagogico_cronograma":
     st.title("Cronograma Pedagógico")
