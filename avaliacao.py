@@ -18,7 +18,7 @@ with open("styles.css") as f:
 # Cabeçalho para mudança de tela (opção de cadastro de aluno, cadastro de escola, consulta de aluno, acesso a material didático, acesso a provas, acesso a gabaritos)
 col1, col2 = st.columns(2)
 with col1:
-    st.image("logo-evolutiva.jpg", use_column_width=False, width=150)
+    st.image("logo-evolutiva.jpg", use_container_width=False, width=150)
 # Botões de navegação
 if "page" not in st.session_state:
     st.session_state.page = "home"
