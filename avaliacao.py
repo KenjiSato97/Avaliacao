@@ -780,10 +780,23 @@ if st.session_state.page == "pedagogico_cronograma":
 
 
 if st.session_state.page == "pedagogico_conteudo":
-    st.title("Conteúdo Programático Teste")
+    st.title("Conteúdo Programático")
     st.write("Esta página é para o acesso ao conteúdo programático.")
     # Adicione aqui o código para o acesso ao conteúdo programático
     # Esta seção pode incluir links ou arquivos para download do conteúdo programático.
+ # Caminho relativo para o PDF dentro da pasta "materiais"
+
+    caminho_programatico = "Materiais/conteudo-programatico.pdf"
+    # Abrir o arquivo em modo binário
+    with open(caminho_programatico, "rb") as f:
+        p_bytes = f.read()
+    # Botão de download
+        st.download_button(
+            label="📘 Baixar cronograma",
+            data=p_bytes,
+            file_name="conteudo-programático.pdf",
+            mime="application/pdf"
+        )
 
 if st.session_state.page == "acesso_gestor":
     st.title("Acesso - Gestor")
