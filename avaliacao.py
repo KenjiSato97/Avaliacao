@@ -771,12 +771,12 @@ if st.session_state.page == "pedagogico_cronograma":
     with open(caminho_cronograma, "rb") as f:
         pdf_bytes = f.read()
     # Botão de download
-    st.download_button(
-        label="📘 Baixar cronograma",
-        data=pdf_bytes,
-        file_name="cronograma.pdf",
-        mime="application/pdf"
-    )
+        st.download_button(
+            label="📘 Baixar cronograma",
+            data=pdf_bytes,
+            file_name="cronograma.pdf",
+            mime="application/pdf"
+        )
 
 
 if st.session_state.page == "pedagogico_conteudo":
