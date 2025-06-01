@@ -780,11 +780,10 @@ if st.session_state.page == "pedagogico_cronograma":
 
 
 if st.session_state.page == "pedagogico_conteudo":
-    st.title("Conteúdo Programático")
+    st.title("Conteúdo Programático Teste")
     st.write("Esta página é para o acesso ao conteúdo programático.")
     # Adicione aqui o código para o acesso ao conteúdo programático
     # Esta seção pode incluir links ou arquivos para download do conteúdo programático.
-    st.button(label = "Baixar conteúdo pedagógico")
 
 if st.session_state.page == "acesso_gestor":
     st.title("Acesso - Gestor")
