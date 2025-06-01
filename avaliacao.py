@@ -699,6 +699,17 @@ if st.session_state.page == "material_ebooks":
     st.write("Esta página é para o acesso a E-books.")
     # Adicione aqui o código para o acesso a E-books
     # Esta seção pode incluir links ou arquivos para download de E-books.
+    caminho_ebook = "materiais/ebook-ciencias.pdf"
+    # Abrir o arquivo em modo binário
+    with open(caminho_ebook, "rb") as f:
+        pdf_bytes = f.read()
+    # Botão de download
+    st.download_button(
+        label="📘 Baixar ebook de Ciências",
+        data=pdf_bytes,
+        file_name="ebook-ciencias.pdf",
+        mime="application/pdf"
+    )
 
 if st.session_state.page == "material_videos":
     st.title("Material Didático - Vídeos")
@@ -761,15 +772,15 @@ if st.session_state.page == "pedagogico_cronograma":
     # Esta seção pode incluir links ou arquivos para download do cronograma pedagógico.
     # Caminho relativo para o PDF dentro da pasta "materiais"
 
-    caminho_pdf = "materiais/ebook-ciencias.pdf"
+    caminho_cronograma = "materiais/cronograma.pdf"
     # Abrir o arquivo em modo binário
-    with open(caminho_pdf, "rb") as f:
+    with open(caminho_cronograma, "rb") as f:
         pdf_bytes = f.read()
     # Botão de download
     st.download_button(
-        label="📘 Baixar ebook de Ciências",
+        label="📘 Baixar cronograma",
         data=pdf_bytes,
-        file_name="ebook-ciencias.pdf",
+        file_name="cronograma.pdf",
         mime="application/pdf"
     )
 
