@@ -759,6 +759,20 @@ if st.session_state.page == "pedagogico_cronograma":
     st.write("Esta página é para o acesso ao cronograma pedagógico.")
     # Adicione aqui o código para o acesso ao cronograma pedagógico
     # Esta seção pode incluir links ou arquivos para download do cronograma pedagógico.
+    # Caminho relativo para o PDF dentro da pasta "materiais"
+
+    caminho_pdf = "materiais/ebook-ciencias.pdf"
+    # Abrir o arquivo em modo binário
+    with open(caminho_pdf, "rb") as f:
+        pdf_bytes = f.read()
+    # Botão de download
+    st.download_button(
+        label="📘 Baixar ebook de Ciências",
+        data=pdf_bytes,
+        file_name="ebook-ciencias.pdf",
+        mime="application/pdf"
+    )
+
 
 if st.session_state.page == "pedagogico_conteudo":
     st.title("Conteúdo Programático")
