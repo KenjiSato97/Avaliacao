@@ -792,7 +792,7 @@ if st.session_state.page == "pedagogico_conteudo":
         p_bytes = f.read()
     # Botão de download
         st.download_button(
-            label="📘 Baixar cronograma",
+            label="📘 Baixar conteúdoprogramático",
             data=p_bytes,
             file_name="conteudo-programático.pdf",
             mime="application/pdf"
