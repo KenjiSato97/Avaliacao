@@ -699,7 +699,7 @@ if st.session_state.page == "material_ebooks":
     st.write("Esta página é para o acesso a E-books.")
     # Adicione aqui o código para o acesso a E-books
     # Esta seção pode incluir links ou arquivos para download de E-books.
-    caminho_ebook = "./materiais/ebook-ciencias.pdf"
+    caminho_ebook = "./Materiais/ebook-ciencias.pdf"
     # Abrir o arquivo em modo binário
     with open(caminho_ebook, "rb") as f: pdf_bytes = f.read()
     # Botão de download
@@ -766,7 +766,7 @@ if st.session_state.page == "pedagogico_cronograma":
     # Esta seção pode incluir links ou arquivos para download do cronograma pedagógico.
     # Caminho relativo para o PDF dentro da pasta "materiais"
 
-    caminho_cronograma = "materiais/cronograma.pdf"
+    caminho_cronograma = "Materiais/cronograma.pdf"
     # Abrir o arquivo em modo binário
     with open(caminho_cronograma, "rb") as f:
         pdf_bytes = f.read()
