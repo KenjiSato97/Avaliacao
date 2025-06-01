@@ -772,10 +772,10 @@ if st.session_state.page == "pedagogico_cronograma":
         pd_bytes = f.read()
     # Botão de download
         st.download_button(
-            label="📘 Baixar cronograma",
-            data=pd_bytes,
-            file_name="cronograma.pdf",
-            mime="application/pdf"
+            label="📘 Baixar cronograma",
+            data=pd_bytes,
+            file_name="cronograma.pdf",
+            mime="application/pdf"
         )
 
 
