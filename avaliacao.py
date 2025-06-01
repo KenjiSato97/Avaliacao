@@ -784,6 +784,7 @@ if st.session_state.page == "pedagogico_conteudo":
     st.write("Esta página é para o acesso ao conteúdo programático.")
     # Adicione aqui o código para o acesso ao conteúdo programático
     # Esta seção pode incluir links ou arquivos para download do conteúdo programático.
+    st.download_button(label = "Baixar conteúdo pedagógico", data=pdf_bytes)
 
 if st.session_state.page == "acesso_gestor":
     st.title("Acesso - Gestor")
